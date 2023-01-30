@@ -1,0 +1,13 @@
+diff --git a/declarativeimports/core/environment.cpp b/declarativeimports/core/environment.cpp
+index 2312e1db..7ec88d52 100644
+--- a/declarativeimports/core/environment.cpp
++++ b/declarativeimports/core/environment.cpp
+@@ -62,7 +62,7 @@ uint Environment::identifyPlasmaDesktopVersion()
+ {
+     //! Identify Plasma Desktop version
+     QProcess process;
+-    process.start("plasmashell", QStringList() << "-v");
++    process.start("kbroadcastnotification", QStringList() << "-v");
+     process.waitForFinished();
+     QString output(process.readAllStandardOutput());
+ 
