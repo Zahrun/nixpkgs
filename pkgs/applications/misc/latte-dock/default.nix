@@ -1,5 +1,5 @@
 { mkDerivation, lib, cmake, xorg, plasma-framework, plasma-wayland-protocols, fetchFromGitLab
-, extra-cmake-modules, karchive, kwindowsystem, qtx11extras, qtwayland, kcrash, knewstuff, wayland, kde-cli-tools, makeWrapper }:
+, extra-cmake-modules, karchive, kwindowsystem, qtx11extras, qtwayland, kcrash, knewstuff, wayland, plasma-workspace, makeWrapper }:
 
 mkDerivation rec {
   pname = "latte-dock";
@@ -13,20 +13,20 @@ mkDerivation rec {
     sha256 = "sha256-WqAlnwD/Q7+OUf2MuJfsFkruYQnlYahRCm1p+1zu8eA=";
   };
 
-  buildInputs = [ plasma-framework plasma-wayland-protocols qtwayland xorg.libpthreadstubs xorg.libXdmcp xorg.libSM wayland kde-cli-tools ];
+  buildInputs = [ plasma-framework plasma-wayland-protocols qtwayland xorg.libpthreadstubs xorg.libXdmcp xorg.libSM wayland ];
 
   nativeBuildInputs = [ extra-cmake-modules cmake karchive kwindowsystem
     qtx11extras kcrash knewstuff makeWrapper ];
 
   patches = [
     ./0001-Disable-autostart.patch
-    ./0002-Detect-kde-version.patch
+    #./0002-Detect-kde-version.patch
   ];
 
   postInstall = ''
     mkdir -p $out/etc/xdg/autostart
     cp $out/share/applications/org.kde.latte-dock.desktop $out/etc/xdg/autostart
-    wrapProgram $out/bin/latte-dock --prefix PATH : ${lib.makeBinPath [ kde-cli-tools ]}
+    wrapProgram $out/bin/latte-dock --prefix PATH : ${lib.makeBinPath [ plasma-workspace ]}
   '';
 
   meta = with lib; {
