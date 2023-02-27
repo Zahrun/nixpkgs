@@ -34,8 +34,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "dtschump";
     repo = "gmic";
-    rev = "v.${version}";
-    hash = "sha256-oEH4GlSV+642TGSJJhV4yzydh1hAQZfzwaiPAZFNQtI=";
+    rev = "cf0127cbeb03e6e169eaa29654b2113b70130a7c";
+    hash = "sha256-38TkIT+KWyGUH3Q0J8W39T3oKPrIOriRnAdEYknmacY=";
   };
 
   patches = [
@@ -85,10 +85,6 @@ stdenv.mkDerivation rec {
 
     # CMake build files were moved to subdirectory.
     mv resources/CMakeLists.txt resources/cmake .
-
-    # TODO: Temporarily fix turning off gmic_is_parallel
-    substituteInPlace CMakeLists.txt \
-      --replace "-Dgmic_is_parallel" ""
 
   '' + lib.optionalString stdenv.isDarwin ''
     substituteInPlace CMakeLists.txt \
