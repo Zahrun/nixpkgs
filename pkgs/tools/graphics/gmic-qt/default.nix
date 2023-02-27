@@ -94,7 +94,11 @@ mkDerivation rec {
     "-DGMIC_QT_HOST=${if variant == "standalone" then "none" else variant}"
     "-DENABLE_SYSTEM_GMIC=ON"
     "-DENABLE_DYNAMIC_LINKING=ON"
+    "-DCMAKE_BUILD_TYPE=Debug"
   ];
+  ninjaFlags = [ "-v" ];
+  CFLAGS="-Dgmic_is_parallel=false -Dcimg_use_fftw3_singlethread=true";
+  CXXFLAGS="-Dgmic_is_parallel=false -Dcimg_use_fftw3_singlethread=true";
 
   postPatch = ''
     patchShebangs \

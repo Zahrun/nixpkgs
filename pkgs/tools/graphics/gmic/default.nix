@@ -77,7 +77,11 @@ stdenv.mkDerivation rec {
     "-DENABLE_CURL=OFF"
     "-DENABLE_DYNAMIC_LINKING=ON"
     "-DUSE_SYSTEM_CIMG=ON"
+    "-DCMAKE_BUILD_TYPE=Debug"
   ];
+  ninjaFlags = [ "-v" ];
+  CFLAGS="-Dgmic_is_parallel=false -Dcimg_use_fftw3_singlethread=true";
+  CXXFLAGS="-Dgmic_is_parallel=false -Dcimg_use_fftw3_singlethread=true";
 
   postPatch = ''
     # TODO: build from source
