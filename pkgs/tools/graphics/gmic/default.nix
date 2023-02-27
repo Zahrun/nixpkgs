@@ -77,11 +77,7 @@ stdenv.mkDerivation rec {
     "-DENABLE_CURL=OFF"
     "-DENABLE_DYNAMIC_LINKING=ON"
     "-DUSE_SYSTEM_CIMG=ON"
-    "-DCMAKE_BUILD_TYPE=Debug"
   ];
-  ninjaFlags = [ "-v" ];
-  CFLAGS="-Dgmic_is_parallel=false -Dcimg_use_fftw3_singlethread=true";
-  CXXFLAGS="-Dgmic_is_parallel=false -Dcimg_use_fftw3_singlethread=true";
 
   postPatch = ''
     # TODO: build from source
@@ -89,6 +85,11 @@ stdenv.mkDerivation rec {
 
     # CMake build files were moved to subdirectory.
     mv resources/CMakeLists.txt resources/cmake .
+
+    # TODO: Temporarily fix turning off gmic_is_parallel
+    substituteInPlace CMakeLists.txt \
+      --replace "-Dgmic_is_parallel" ""
+
   '' + lib.optionalString stdenv.isDarwin ''
     substituteInPlace CMakeLists.txt \
       --replace "LD_LIBRARY_PATH" "DYLD_LIBRARY_PATH"
