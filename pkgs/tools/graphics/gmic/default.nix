@@ -27,31 +27,23 @@
 
 stdenv.mkDerivation rec {
   pname = "gmic";
-  version = "3.2.1";
+  version = "3.2.2";
 
   outputs = [ "out" "lib" "dev" "man" ];
 
   src = fetchFromGitHub {
     owner = "dtschump";
     repo = "gmic";
-    rev = "v.${version}";
-    hash = "sha256-oEH4GlSV+642TGSJJhV4yzydh1hAQZfzwaiPAZFNQtI=";
+    rev = "a8ca738affc8b6ac3b16c22fc3d16d4e161e229d";
+    sha256 = "sha256-Dz8X07OtsP7DX9+JoeddBBiiWh0N5spkyrP9O4+NFiE=";
   };
-
-  patches = [
-    (fetchpatch {
-      name = "gmic-3.2.1-fix-system-gmic.patch";
-      url = "https://github.com/GreycLab/gmic/commit/9db3f6a39d9ed67b4279654da88993a8057575ff.patch";
-      hash = "sha256-JznKCs56t6cJ4HLqlhMZjSOupEB8cdkn3j6RgZpcpzo=";
-    })
-  ];
 
   # TODO: build this from source
   # https://github.com/dtschump/gmic/blob/b36b2428db5926af5eea5454f822f369c2d9907e/src/Makefile#L675-L729
   gmic_stdlib = fetchurl {
     name = "gmic_stdlib.h";
-    url = "http://gmic.eu/gmic_stdlib${lib.replaceStrings ["."] [""] version}.h";
-    hash = "sha256-f8d9jTVnHwSoyMuiM+Qv86e/BYX9SSx9cl3borihxnc=";
+    url = "https://gmic.eu/gmic_stdlib${lib.replaceStrings ["."] [""] version}.h";
+    sha256 = "sha256-+XesmHBasS+8w2BkOUd8tkugBEzNQCOT5l3T1yqAmLQ=";
   };
 
   nativeBuildInputs = [
