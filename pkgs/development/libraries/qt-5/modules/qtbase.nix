@@ -24,8 +24,8 @@
 , libmysqlclient
 , buildExamples ? false
 , buildTests ? false
-, debug ? false
-, developerBuild ? false
+, debug ? true
+, developerBuild ? true
 , decryptSslTraffic ? false
 , testers
 }:
