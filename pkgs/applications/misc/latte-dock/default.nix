@@ -1,5 +1,6 @@
 { mkDerivation, lib, cmake, xorg, plasma-framework, plasma-wayland-protocols, fetchFromGitLab
-, extra-cmake-modules, karchive, kwindowsystem, qtx11extras, qtwayland, kcrash, knewstuff, wayland }:
+, extra-cmake-modules, karchive, kwindowsystem, qtx11extras, qtwayland, kcrash, knewstuff, wayland
+, plasma-workspace, libsForQt5 }:
 
 mkDerivation rec {
   pname = "latte-dock";
@@ -14,10 +15,10 @@ mkDerivation rec {
   #  hash = "sha256-qg75Qy4AYS1lnL292EVohbIYcyub1LCPIBC5Y2d9oDg=";
   #};
 
-  buildInputs = [ plasma-framework plasma-wayland-protocols qtwayland xorg.libpthreadstubs xorg.libXdmcp xorg.libSM wayland ];
+  buildInputs = [ plasma-framework plasma-wayland-protocols qtwayland xorg.libpthreadstubs xorg.libXdmcp xorg.libSM wayland libsForQt5.qt5.qtquickcontrols2 libsForQt5.qt5.qtquickcontrols libsForQt5.qt5.qtdeclarative libsForQt5.qt5.qtgraphicaleffects ];
 
   nativeBuildInputs = [ extra-cmake-modules cmake karchive kwindowsystem
-    qtx11extras kcrash knewstuff ];
+    qtx11extras kcrash knewstuff plasma-workspace libsForQt5.qt5.qtquickcontrols2 libsForQt5.qt5.qtquickcontrols libsForQt5.qt5.qtdeclarative plasma-framework ];
 
   patches = [
     ./0001-Disable-autostart.patch
