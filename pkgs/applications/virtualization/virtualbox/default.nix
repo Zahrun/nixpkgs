@@ -66,16 +66,6 @@ in stdenv.mkDerivation {
     ls kBuild/bin/linux.x86/k* tools/linux.x86/bin/* | xargs -n 1 patchelf --set-interpreter ${stdenv.cc.libc}/lib/ld-linux.so.2
     ls kBuild/bin/linux.amd64/k* tools/linux.amd64/bin/* | xargs -n 1 patchelf --set-interpreter ${stdenv.cc.libc}/lib/ld-linux-x86-64.so.2
 
-    grep 'libpulse\.so\.0'      src include -rI --files-with-match | xargs sed -i -e '
-      ${optionalString pulseSupport
-        ''s@"libpulse\.so\.0"@"${libpulseaudio.out}/lib/libpulse.so.0"@g''}'
-
-    grep 'libdbus-1\.so\.3'     src include -rI --files-with-match | xargs sed -i -e '
-      s@"libdbus-1\.so\.3"@"${dbus.lib}/lib/libdbus-1.so.3"@g'
-
-    grep 'libasound\.so\.2'     src include -rI --files-with-match | xargs sed -i -e '
-      s@"libasound\.so\.2"@"${alsa-lib.out}/lib/libasound.so.2"@g'
-
     export USER=nix
     set +x
   '';
@@ -96,8 +86,6 @@ in stdenv.mkDerivation {
     })
   ++ [
     ./qt-dependency-paths.patch
-    # https://github.com/NixOS/nixpkgs/issues/123851
-    ./fix-audio-driver-loading.patch
   ];
 
   postPatch = ''
