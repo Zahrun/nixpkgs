@@ -86,6 +86,7 @@ in stdenv.mkDerivation {
     })
   ++ [
     ./qt-dependency-paths.patch
+    ./fix-pulse.patch
   ];
 
   postPatch = ''

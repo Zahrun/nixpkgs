@@ -1,0 +1,14 @@
+diff --git a/src/VBox/Main/xml/Settings.cpp b/src/VBox/Main/xml/Settings.cpp
+index 046ae0d..8aecac3 100644
+--- a/src/VBox/Main/xml/Settings.cpp
++++ b/src/VBox/Main/xml/Settings.cpp
+@@ -8933,8 +8933,7 @@ AudioDriverType_T MachineConfigFile::getHostDefaultAudioDriver()
+     {
+ # ifdef VBOX_WITH_AUDIO_PULSE
+         /* Check for the pulse library & that the pulse audio daemon is running. */
+-        if (RTProcIsRunningByName("pulseaudio") &&
+-            RTLdrIsLoadable("libpulse.so.0"))
++        if (RTLdrIsLoadable("libpulse.so.0"))
+             s_enmLinuxDriver = AudioDriverType_Pulse;
+         else
+ # endif /* VBOX_WITH_AUDIO_PULSE */
