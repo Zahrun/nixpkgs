@@ -5,21 +5,22 @@
 , obs-studio
 , onnxruntime
 , opencv
+, cudaPackages
 }:
 
 stdenv.mkDerivation rec {
   pname = "obs-backgroundremoval";
-  version = "0.5.16";
+  version = "0.5.17";
 
   src = fetchFromGitHub {
     owner = "royshil";
     repo = "obs-backgroundremoval";
-    rev = "v${version}";
-    hash = "sha256-E+pm/Ma6dZTYlX3DpB49ynTETsRS2TBqgHSCijl/Txc=";
+    rev = "db8791aa47c4c1e99e2d42b7057d73e51f6df0be";
+    hash = "sha256-anTpHj/+E0O/p/mxE+j6d59TcLI20ixZKeqtavrnac4=";
   };
 
   nativeBuildInputs = [ cmake ];
-  buildInputs = [ obs-studio onnxruntime opencv ];
+  buildInputs = [ obs-studio onnxruntime opencv cudaPackages.tensorrt ];
 
   dontWrapQtApps = true;
 
