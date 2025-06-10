@@ -14,7 +14,7 @@ stdenv.mkDerivation rec {
 
   src = fetchurl {
     url = "https://apt.connectify.me/pool/main/s/speedify/speedify_${version}_amd64.deb";
-    hash = "056fd719d822527c7c653f31bed220ac191dde253a3b21ac9aced73cfb7aa74c";
+    hash = "sha256-BW/XGdgiUnx8ZT8xvtIgrBkd3iU6OyGsms7XPPt6p0w=";
   };
 
   nativeBuildInputs = [ makeWrapper ];
