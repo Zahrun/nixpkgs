@@ -1,0 +1,56 @@
+{ lib
+, stdenv
+, fetchurl
+, procps
+, nettools
+, autoPatchelfHook
+,
+}:
+stdenv.mkDerivation rec {
+  pname = "speedify";
+  version = "15.6.4-12495";
+
+  src = fetchurl {
+    url = "https://apt.connectify.me/pool/main/s/speedify/speedify_${version}_amd64.deb";
+    hash = "sha256-b8J7JqVxuRREC16DeKD7hOBX4IZMbJPLArLmPtnDUB4=";
+  };
+
+  nativeBuildInputs = [ autoPatchelfHook ];
+  buildInputs = [ procps nettools ];
+
+  unpackPhase = ''
+    ar x $src
+    tar xf data.tar.*
+  '';
+
+  installPhase = ''
+    substituteInPlace "usr/share/speedify/SpeedifyStartup.sh" \
+    	--replace-fail '/usr/share/' "$out/share/"
+    substituteInPlace "usr/share/speedify/SpeedifyShutdown.sh" \
+    	--replace-fail '/usr/share/' "$out/share/"
+    substituteInPlace "usr/share/speedify/GenerateLogs.sh" \
+    	--replace-fail '/usr/share/' "$out/share/"
+    substituteInPlace "usr/share/speedify/SpeedifyStartup.sh" \
+      --replace-fail 'logs' "/var/log/speedify"
+
+    mkdir -p $out/share/
+    mv usr/share $out/
+    mkdir -p $out/etc/
+    mv lib/systemd $out/etc/
+    ls $out/*
+    cat $out/lib/systemd/system/*
+    mkdir -p $out/bin
+    ln -s $out/share/speedify/speedify_cli $out/bin/speedify_cli
+  '';
+
+  meta = with lib;
+    {
+      homepage = "https://speedify.com/";
+      description = "Use multiple internet connections in parallel";
+      longDescription = "Combine multiple internet connections (Wi-Fi, 4G, 5G, Ethernet, Starlink, Satellite, and more) to improve the stability, speed, and security of your online experiences";
+      sourceProvenance = with sourceTypes; [ binaryNativeCode ];
+      license = licenses.unfreeRedistributable;
+      platforms = [ "x86_64-linux" ];
+      maintainers = with maintainers; [ zahrun ];
+    };
+}
