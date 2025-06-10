@@ -1,11 +1,11 @@
 { lib
 , stdenv
 , fetchurl
-, gnutar
-, steam-run
-, makeDesktopItem
-, copyDesktopItems
-, makeWrapper
+, enableSystemd ? lib.meta.availableOn stdenv.hostPlatform systemd
+, systemd
+, procps
+, nettools
+, autoPatchelfHook
 ,
 }:
 stdenv.mkDerivation rec {
@@ -17,8 +17,9 @@ stdenv.mkDerivation rec {
     hash = "sha256-BW/XGdgiUnx8ZT8xvtIgrBkd3iU6OyGsms7XPPt6p0w=";
   };
 
-  nativeBuildInputs = [ makeWrapper ];
-  buildInputs = [ steam-run ];
+  nativeBuildInputs = [ autoPatchelfHook ];
+  buildInputs = [ procps nettools ]
+  ++ lib.optional enableSystemd systemd;
 
   unpackPhase = ''
     ar x $src
@@ -27,21 +28,47 @@ stdenv.mkDerivation rec {
 
   installPhase = ''
     #runHook preInstall
-    pwd
-    ls
-    read
-    ls *
-    #cd ./anylogic
-    #pwd
-    #chmod -R a+wr plugins/com.anylogic.examples_*
-    #cd ..
-    #mkdir -p $out/opt
-    #mv anylogic $out/opt
-    #mkdir -p $out/share/icons
-    #ln -s $out/opt/anylogic/icon.xpm $out/share/icons/anylogic-ple.xpm
-    #mkdir -p $out/bin
-    #makeWrapper "${steam-run}/bin/steam-run" "$out/bin/anylogic" --add-flags "$out/opt/anylogic/anylogic"
-    #chmod +x $out/bin/anylogic
+    if false; then
+      set -x
+      echo echo5
+      pwd
+      ls -l
+      #ls *
+      ls -l lib
+      ls -l lib/systemd
+      ls -l lib/systemd/system
+      cat lib/systemd/system/speedify.service
+      set +x
+    fi
+
+    #sed -i "s;/usr/share;$out/share;g" lib/systemd/system/speedify.service
+    #sed -i "s;/usr/share;$out/share;g" lib/systemd/system/speedify-sharing.service
+    #substituteInPlace "lib/systemd/system/speedify.service" \
+    #	--replace-fail '/usr/' "$out/usr/"
+    #substituteInPlace "lib/systemd/system/speedify-sharing.service" \
+    #	--replace-fail '/usr/' "$out/usr/"
+
+    substituteInPlace "usr/share/speedify/SpeedifyStartup.sh" \
+    	--replace-fail '/usr/share/' "$out/share/"
+    substituteInPlace "usr/share/speedify/SpeedifyShutdown.sh" \
+    	--replace-fail '/usr/share/' "$out/share/"
+    substituteInPlace "usr/share/speedify/GenerateLogs.sh" \
+    	--replace-fail '/usr/share/' "$out/share/"
+#     substituteInPlace "usr/share/speedify/SpeedifyStartup.sh" \
+#       --replace-fail './speedify -d' "steam-run ./speedify -d"
+    substituteInPlace "usr/share/speedify/SpeedifyStartup.sh" \
+      --replace-fail 'logs' "/var/log/speedify"
+    cat usr/share/speedify/SpeedifyStartup.sh
+
+    mkdir -p $out/share/
+    mv usr/share $out/
+    mkdir -p $out/etc/
+    mv lib/systemd $out/etc/
+    ls $out/*
+    cat $out/lib/systemd/system/*
+    mkdir -p $out/bin
+    ln -s $out/share/speedify/speedify_cli $out/bin/speedify_cli
+
     #runHook postInstall
   '';
 
