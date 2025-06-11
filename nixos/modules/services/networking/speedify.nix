@@ -6,9 +6,6 @@
 }:
 let
   cfg = config.services.speedify;
-  speedify = import (builtins.fetchTarball {
-    url = "https://github.com/zahrun/nixpkgs/archive/faf6f1cddbc6.tar.gz";
-  }) {config = removeAttrs config.nixpkgs.config [ "packageOverrides" ];};
 in
 with lib;
 {
@@ -18,15 +15,17 @@ with lib;
       default = false;
       description = ''
         This option enables Speedify daemon.
+        This sets {option}`networking.firewall.checkReversePath` to "loose", which might be undesirable for security.
       '';
     };
 
-    package = lib.mkPackageOption speedify "speedify" { };
-
+    package = lib.mkPackageOption pkgs "speedify" { };
   };
 
   config = mkIf cfg.enable {
     boot.kernelModules = [ "tun" ];
+
+    networking.firewall.checkReversePath = "loose";
 
     systemd.services.speedify = {
       description = "Speedify Service";
@@ -38,13 +37,8 @@ with lib;
       after = [
         "network-online.target"
         "NetworkManager.service"
-        #"systemd-resolved.service"
       ];
-      # See https://github.com/NixOS/nixpkgs/issues/262681
-      #path = lib.optional config.networking.resolvconf.enable config.networking.resolvconf.package;
       path = [ pkgs.procps pkgs.nettools ];
-      #startLimitBurst = 5;
-      #startLimitIntervalSec = 20;
       serviceConfig = {
         ExecStart = "${cfg.package}/share/speedify/SpeedifyStartup.sh";
         ExecStop = "${cfg.package}/share/speedify/SpeedifyShutdown.sh";
@@ -53,8 +47,6 @@ with lib;
         TimeoutStartSec = 30;
         TimeoutStopSec = 30;
         Type = "forking";
-        #CapabilityBoundingSet = "CAP_NET_ADMIN CAP_NET_RAW";
-        #AmbientCapabilities = "CAP_NET_ADMIN CAP_NET_RAW";
       };
     };
   };
