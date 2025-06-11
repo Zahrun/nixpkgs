@@ -47,7 +47,8 @@ stdenv.mkDerivation rec {
     {
       homepage = "https://speedify.com/";
       description = "Use multiple internet connections in parallel";
-      longDescription = "Combine multiple internet connections (Wi-Fi, 4G, 5G, Ethernet, Starlink, Satellite, and more) to improve the stability, speed, and security of your online experiences";
+      longDescription = "Combine multiple internet connections (Wi-Fi, 4G, 5G, Ethernet, Starlink, Satellite, and more) to improve the stability, speed, and security of your online experiences
+      Check corresponding option {option}`services.speedify.enable`";
       sourceProvenance = with sourceTypes; [ binaryNativeCode ];
       license = licenses.unfreeRedistributable;
       platforms = [ "x86_64-linux" ];
