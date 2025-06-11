@@ -8,7 +8,7 @@
 }:
 stdenv.mkDerivation rec {
   pname = "speedify";
-  version = "15.6.3-12489";
+  version = "15.6.4-12495";
 
   src = fetchurl {
     url = "https://apt.connectify.me/pool/main/s/speedify/speedify_${version}_amd64.deb";
