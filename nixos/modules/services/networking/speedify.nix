@@ -38,7 +38,10 @@ with lib;
         "network-online.target"
         "NetworkManager.service"
       ];
-      path = [ pkgs.procps pkgs.nettools ];
+      path = [
+        pkgs.procps
+        pkgs.nettools
+      ];
       serviceConfig = {
         ExecStart = "${cfg.package}/share/speedify/SpeedifyStartup.sh";
         ExecStop = "${cfg.package}/share/speedify/SpeedifyShutdown.sh";

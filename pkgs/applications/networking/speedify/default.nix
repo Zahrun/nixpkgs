@@ -1,10 +1,10 @@
-{ lib
-, stdenv
-, fetchurl
-, procps
-, nettools
-, autoPatchelfHook
-,
+{
+  lib,
+  stdenv,
+  fetchurl,
+  procps,
+  nettools,
+  autoPatchelfHook,
 }:
 stdenv.mkDerivation rec {
   pname = "speedify";
@@ -16,7 +16,10 @@ stdenv.mkDerivation rec {
   };
 
   nativeBuildInputs = [ autoPatchelfHook ];
-  buildInputs = [ procps nettools ];
+  buildInputs = [
+    procps
+    nettools
+  ];
 
   unpackPhase = ''
     ar x $src
@@ -43,15 +46,14 @@ stdenv.mkDerivation rec {
     ln -s $out/share/speedify/speedify_cli $out/bin/speedify_cli
   '';
 
-  meta = with lib;
-    {
-      homepage = "https://speedify.com/";
-      description = "Use multiple internet connections in parallel";
-      longDescription = "Combine multiple internet connections (Wi-Fi, 4G, 5G, Ethernet, Starlink, Satellite, and more) to improve the stability, speed, and security of your online experiences
+  meta = with lib; {
+    homepage = "https://speedify.com/";
+    description = "Use multiple internet connections in parallel";
+    longDescription = "Combine multiple internet connections (Wi-Fi, 4G, 5G, Ethernet, Starlink, Satellite, and more) to improve the stability, speed, and security of your online experiences
       Check corresponding option {option}`services.speedify.enable`";
-      sourceProvenance = with sourceTypes; [ binaryNativeCode ];
-      license = licenses.unfreeRedistributable;
-      platforms = [ "x86_64-linux" ];
-      maintainers = with maintainers; [ zahrun ];
-    };
+    sourceProvenance = with sourceTypes; [ binaryNativeCode ];
+    license = licenses.unfreeRedistributable;
+    platforms = [ "x86_64-linux" ];
+    maintainers = with maintainers; [ zahrun ];
+  };
 }
