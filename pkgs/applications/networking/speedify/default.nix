@@ -1,8 +1,6 @@
 { lib
 , stdenv
 , fetchurl
-, enableSystemd ? lib.meta.availableOn stdenv.hostPlatform systemd
-, systemd
 , procps
 , nettools
 , autoPatchelfHook
@@ -18,8 +16,7 @@ stdenv.mkDerivation rec {
   };
 
   nativeBuildInputs = [ autoPatchelfHook ];
-  buildInputs = [ procps nettools ]
-  ++ lib.optional enableSystemd systemd;
+  buildInputs = [ procps nettools ];
 
   unpackPhase = ''
     ar x $src
