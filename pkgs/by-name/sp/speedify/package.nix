@@ -28,11 +28,11 @@ stdenv.mkDerivation rec {
 
   installPhase = ''
     substituteInPlace "usr/share/speedify/SpeedifyStartup.sh" \
-    	--replace-fail '/usr/share/' "$out/share/"
+      --replace-fail '/usr/share/' "$out/share/"
     substituteInPlace "usr/share/speedify/SpeedifyShutdown.sh" \
-    	--replace-fail '/usr/share/' "$out/share/"
+      --replace-fail '/usr/share/' "$out/share/"
     substituteInPlace "usr/share/speedify/GenerateLogs.sh" \
-    	--replace-fail '/usr/share/' "$out/share/"
+      --replace-fail '/usr/share/' "$out/share/"
     substituteInPlace "usr/share/speedify/SpeedifyStartup.sh" \
       --replace-fail 'logs' "/var/log/speedify"
 
