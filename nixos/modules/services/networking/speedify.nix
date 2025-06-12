@@ -7,11 +7,10 @@
 let
   cfg = config.services.speedify;
 in
-with lib;
 {
   options.services.speedify = {
-    enable = mkOption {
-      type = types.bool;
+    enable = lib.mkOption {
+      type = lib.types.bool;
       default = false;
       description = ''
         This option enables Speedify daemon.
@@ -22,7 +21,7 @@ with lib;
     package = lib.mkPackageOption pkgs "speedify" { };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     boot.kernelModules = [ "tun" ];
 
     networking.firewall.checkReversePath = "loose";
@@ -54,7 +53,7 @@ with lib;
     };
   };
 
-  meta.maintainers = with maintainers; [
+  meta.maintainers = with lib.maintainers; [
     zahrun
   ];
 }
