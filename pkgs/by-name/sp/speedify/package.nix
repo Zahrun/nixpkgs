@@ -27,6 +27,8 @@ stdenv.mkDerivation rec {
   ];
 
   installPhase = ''
+    runHook preInstall
+
     substituteInPlace "usr/share/speedify/SpeedifyStartup.sh" \
       --replace-fail '/usr/share/' "$out/share/"
     substituteInPlace "usr/share/speedify/SpeedifyShutdown.sh" \
@@ -40,8 +42,11 @@ stdenv.mkDerivation rec {
     mv usr/share $out/
     mkdir -p $out/etc/
     mv lib/systemd $out/etc/
+
     mkdir -p $out/bin
     ln -s $out/share/speedify/speedify_cli $out/bin/speedify_cli
+
+    runHook postInstall
   '';
 
   meta = {
