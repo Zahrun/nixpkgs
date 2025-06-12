@@ -50,7 +50,7 @@ stdenv.mkDerivation rec {
     longDescription = "Combine multiple internet connections (Wi-Fi, 4G, 5G, Ethernet, Starlink, Satellite, and more) to improve the stability, speed, and security of your online experiences
       Check corresponding option {option}`services.speedify.enable`";
     sourceProvenance = with lib.sourceTypes; [ binaryNativeCode ];
-    license = lib.licenses.unfreeRedistributable;
+    license = lib.licenses.unfree;
     platforms = [ "x86_64-linux" ];
     maintainers = with lib.maintainers; [ zahrun ];
   };
