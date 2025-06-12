@@ -1,6 +1,7 @@
 {
   lib,
   stdenv,
+  dpkg,
   fetchurl,
   procps,
   nettools,
@@ -15,16 +16,15 @@ stdenv.mkDerivation rec {
     hash = "sha256-b8J7JqVxuRREC16DeKD7hOBX4IZMbJPLArLmPtnDUB4=";
   };
 
-  nativeBuildInputs = [ autoPatchelfHook ];
+  nativeBuildInputs = [
+    dpkg
+    autoPatchelfHook
+  ];
+
   buildInputs = [
     procps
     nettools
   ];
-
-  unpackPhase = ''
-    ar x $src
-    tar xf data.tar.*
-  '';
 
   installPhase = ''
     substituteInPlace "usr/share/speedify/SpeedifyStartup.sh" \
