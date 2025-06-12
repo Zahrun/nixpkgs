@@ -40,7 +40,6 @@ stdenv.mkDerivation rec {
     mv usr/share $out/
     mkdir -p $out/etc/
     mv lib/systemd $out/etc/
-    cat $out/lib/systemd/system/*
     mkdir -p $out/bin
     ln -s $out/share/speedify/speedify_cli $out/bin/speedify_cli
   '';
